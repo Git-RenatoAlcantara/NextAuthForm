@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt'
 
 export const authOptions: AuthOptions = {
     adapter: PrismaAdapter(prisma),
+    secret: process.env.NEXTAUTH_URL,
     providers: [
     
           CredentialsProvider({
@@ -39,11 +40,7 @@ export const authOptions: AuthOptions = {
             }
           })      
     ],
-    debug: process.env.NODE_ENV === 'development',
-    session: {
-      strategy: "jwt",
-    },
-    secret: process.env.NEXTAUTH_SECRET,
+  
 }
 
 const handler = NextAuth(authOptions);

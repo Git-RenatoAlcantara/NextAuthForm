@@ -6,16 +6,17 @@ import { useRouter } from "next/navigation";
 import { FieldValues,SubmitHandler,useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { signIn } from "next-auth/react";
 
 const schema = yup.object().shape({
-    username: yup.string().min(5).required(),
     email: yup.string().email().required(),
     password: yup.string().min(8).max(32).required(),
 });
 
 
 const SignForm = () => {
+    const router = useRouter()
+
     const { 
         control,
         handleSubmit,
@@ -30,6 +31,16 @@ const SignForm = () => {
 
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        const signInData = await signIn('credentials', {
+            email: data.email,
+            password: data.password,
+            redirect: false
+        })
+        if(signInData?.error){
+            console.log(signInData.error)
+        }else{
+            router.push('/admin')
+        }
     }
 
     return (
