@@ -1,14 +1,13 @@
 'use client';
 
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
 import { FieldValues,SubmitHandler,useForm, Controller } from "react-hook-form";
-import { zodResolver } from '@hookform/resolvers/zod';
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import clsx from "clsx"
 import axios from "axios";
+import Input from "../components/Input";
 
 const schema = yup.object().shape({
     username: yup.string().min(5).required(),
@@ -62,125 +61,35 @@ const AuthForm = () => {
                    onSubmit={handleSubmit(onSubmit)}
                 >
 
-                <input
-                id="username"
-                type="username"
-                {...register("username")}
-                    className={clsx(`
-                        form-input
-                        block
-                        px-2
-                        w-full
-                        rounded-md
-                        border-0
-                        py-1.5
-                        text-gray-900
-                        shadow-sm
-                        ring-1
-                        ring-inset
-                        ring-gray-300
-                        placeholder:text-gray-400
-                        focus:ring-2
-                        focus:ring-inset
-                        focus:ring-sky-600
-                        sm:text-sm
-                        sm:leading-6`,
-                        errors["username"] && "ring-rose-500",
-        
-                )}
-                placeholder="username"
-                />
-                <p className="text-sm">{errors.username?.message}</p>
-                    
-                <input
-                id="email"
-                type="email"
-                {...register("email")}
-                    className={clsx(`
-                        form-input
-                        block
-                        px-2
-                        w-full
-                        rounded-md
-                        border-0
-                        py-1.5
-                        text-gray-900
-                        shadow-sm
-                        ring-1
-                        ring-inset
-                        ring-gray-300
-                        placeholder:text-gray-400
-                        focus:ring-2
-                        focus:ring-inset
-                        focus:ring-sky-600
-                        sm:text-sm
-                        sm:leading-6`,
-                        errors["email"] && "ring-rose-500",
-        
-                )}
-                placeholder="email"
-                />
-                <p className="text-sm">{errors.email?.message}</p>
+               <Input 
+                 id="username" 
+                 label="username" 
+                 register={register}
+                 errors={errors}
+               />   
+               
+               <Input 
+                 id="email" 
+                 label="email" 
+                 register={register}
+                 errors={errors}
+               />   
+            
 
-                <input
-                id="password"
-                type="password"
-                {...register("password")}
-                className={clsx(`
-                    form-input
-                    block
-                    px-2
-                    w-full
-                    rounded-md
-                    border-0
-                    py-1.5
-                    text-gray-900
-                    shadow-sm
-                    ring-1
-                    ring-inset
-                    ring-gray-300
-                    placeholder:text-gray-400
-                    focus:ring-2
-                    focus:ring-inset
-                    focus:ring-sky-600
-                    sm:text-sm
-                    sm:leading-6`,
-                    errors["password"] && "ring-rose-500",
-        
-                )}
-                placeholder="password"
-                />
-                <p>{errors.password?.message}</p>
+                <Input 
+                 id="password" 
+                 label="password" 
+                 register={register}
+                 errors={errors}
+               />  
                 
-                <input
-                id="confirmPassword"
-                type="confirmPassword"
-                {...register("confirmPassword")}
-                    className={clsx(`
-                        form-input
-                        block
-                        px-2
-                        w-full
-                        rounded-md
-                        border-0
-                        py-1.5
-                        text-gray-900
-                        shadow-sm
-                        ring-1
-                        ring-inset
-                        ring-gray-300
-                        placeholder:text-gray-400
-                        focus:ring-2
-                        focus:ring-inset
-                        focus:ring-sky-600
-                        sm:text-sm
-                        sm:leading-6`,
-                        errors["confirmPassword"] && "ring-rose-500",
-        
-                )}
-                placeholder="confirm password"
-                />
-                <p className="text-sm">{errors.confirmPassword?.message}</p>
+                <Input 
+                 id="confirmPassword" 
+                 label="confirmPassword" 
+                 register={register}
+                 errors={errors}
+               />  
+            
 
                 <button 
                     type="submit"

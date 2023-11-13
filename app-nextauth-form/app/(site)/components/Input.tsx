@@ -2,7 +2,7 @@
 
 import clsx from "clsx"
 import  * as z  from 'zod'
-
+import { ErrorMessage } from "@hookform/error-message"
 
 const FormSchema = z.object({
     username: z.string().min(1, "Username is required").max(100),
@@ -23,7 +23,7 @@ interface InputProps {
     id: string;
     type?: string;
     required?: boolean;
-    register: UseFormRegister<FieldValues>,
+    register: UseFormRegister<any>,
     errors: FieldErrors,
     disabled?: boolean;
 }
@@ -37,11 +37,21 @@ const Input: React.FC<InputProps> = ({
     errors,
     disabled
  }) => {
-
-    console.log(errors[id])
+    console.log(errors)
     return (
         <div>
-           
+           <label
+                className="
+                    block
+                    text-sm
+                    font-medium
+                    leading-6
+                    text-gray-900
+                "
+                htmlFor={id}
+            >
+                {label}
+            </label>
             <div className="mt-2">
                <input 
                   id={id}
@@ -73,7 +83,11 @@ const Input: React.FC<InputProps> = ({
                 )}
                />
             </div>
-        
+            <ErrorMessage 
+                errors={errors}
+                name={id}
+            />
+    
         </div>
     )
 }
