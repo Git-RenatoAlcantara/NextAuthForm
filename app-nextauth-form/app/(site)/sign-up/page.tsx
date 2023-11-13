@@ -34,7 +34,7 @@ const AuthForm = () => {
   
       const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         axios.post('/api/register', data)
-        .then(() =>  router.push('/dashboard'))
+        .then(() =>  router.push('/admin'))
         .catch(() => console.log('Something went wrong!'))
     }
 
