@@ -37,7 +37,7 @@ const Input: React.FC<InputProps> = ({
     errors,
     disabled
  }) => {
-    console.log(errors)
+    
     return (
         <div>
            <label

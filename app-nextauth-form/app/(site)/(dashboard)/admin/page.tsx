@@ -1,13 +1,21 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
-import { getServerSession } from "next-auth"
+'use client';
+
+import { signOut } from "next-auth/react";
 
 
-const Dashboard = () => {
-    const session = getServerSession(authOptions)
-    
+
+const Dashboard = async () => {
     return (
-        <h1>Dashboard</h1>
+        <>
+            <button
+                className="px-4 py-2 bg-gray-300 text-white"
+                onClick={() => signOut()}
+            >
+                Logout
+            </button>
+        </>
     )
+
 }
 
 export default Dashboard

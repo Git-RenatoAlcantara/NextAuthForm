@@ -43,7 +43,7 @@ export async function POST(
         where: { username: username }
       })
 
-      if(existingUserByEmail){
+      if(existingUserByUsername){
         return NextResponse.json({ user: null, message: "User with this username already exists"}, {status: 409})
       }
 

@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { FieldValues,SubmitHandler,useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 const schema = yup.object().shape({
     email: yup.string().email().required(),
@@ -16,6 +17,15 @@ const schema = yup.object().shape({
 
 const SignForm = () => {
     const router = useRouter()
+    const session = useSession()
+    useEffect(() => {
+
+        if(session?.status === 'authenticated'){
+            router.push('/admin')
+        }
+
+    }, [session?.status, router])
+
 
     const { 
         control,
@@ -31,16 +41,21 @@ const SignForm = () => {
 
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-        const signInData = await signIn('credentials', {
+       signIn('credentials', {
             email: data.email,
             password: data.password,
             redirect: false
         })
-        if(signInData?.error){
-            console.log(signInData.error)
-        }else{
+       .then((callback) => {
+        if(callback?.error){
+            console.log('Invalid credentials')
+        }
+
+        if(callback?.ok && !callback?.error){
+            console.log("Logged in!")
             router.push('/admin')
         }
+       })
     }
 
     return (
@@ -91,7 +106,6 @@ const SignForm = () => {
                     rounded-md
                     px-3
                     py-2
-                    text-sm
                     font-semibold
                     focus-visible:outline
                     focus-visible:outline-2

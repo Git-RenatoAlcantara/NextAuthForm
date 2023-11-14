@@ -1,11 +1,16 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import CredentialsProvider  from 'next-auth/providers/credentials';
-import prisma from "@/app/libs/prismadb"
 import { PrismaAdapter} from '@next-auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+
 import bcrypt from 'bcrypt'
 
 export const authOptions: AuthOptions = {
     adapter: PrismaAdapter(prisma),
+    debug: process.env.NODE_ENV === 'development',
     secret: process.env.SECRET_JWT,
     session: {
         strategy: 'jwt'
@@ -22,31 +27,35 @@ export const authOptions: AuthOptions = {
               password: { label: 'password', type: 'password' }
             },
             async authorize(credentials) {
+                console.log("credentials", credentials)
                 if(!credentials?.email || !credentials?.password){
-                    return null;
+                    throw new Error('Email and password are empty')
                 }
              
                 const existingUser = await prisma.user.findUnique({
                     where: { email: credentials?.email}
                 });
+
+
                 if(!existingUser){
-                    return null;
+                    throw new Error('User not exists')
                 }
 
-                const passwordMatch = await bcrypt.compare(credentials.password, existingUser.password);
+                const passwordMatch = await bcrypt.compare(
+                    credentials.password, 
+                    existingUser.password
+                );
+
+                console.log("password", passwordMatch)
 
                 if(!passwordMatch){
-                    return null
+                    throw new Error('Password does not match')
                 }
-                return {
-                    id: `${existingUser.id}`,
-                    username: existingUser.username,
-                    email: existingUser.email
-                }
+                return existingUser
             }
           })      
     ],
-    async session({ session, use, token }: {session: any, use: any, token: any}) {
+    async session({ session, token }) {
      return {
         ...session,
         user: {
