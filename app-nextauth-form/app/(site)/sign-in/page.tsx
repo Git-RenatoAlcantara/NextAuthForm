@@ -1,6 +1,6 @@
 'use client'
 
-import Input from "../components/Input"
+import Input from "../../components/Input"
 
 import { useRouter } from "next/navigation";
 import { FieldValues,SubmitHandler,useForm, Controller } from "react-hook-form";
@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const schema = yup.object().shape({
     email: yup.string().email().required(),
@@ -49,10 +50,12 @@ const SignForm = () => {
        .then((callback) => {
         if(callback?.error){
             console.log('Invalid credentials')
+            toast.error('Something went wrong!')
         }
 
         if(callback?.ok && !callback?.error){
             console.log("Logged in!")
+            toast.success('Logged in!')
             router.push('/admin')
         }
        })

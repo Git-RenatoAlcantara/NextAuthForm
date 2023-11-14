@@ -1,18 +1,18 @@
-'use client';
-
 import { signOut } from "next-auth/react";
-
+import EmptyState from "../../../components/EmptyState";
 
 
 const Dashboard = async () => {
     return (
         <>
-            <button
-                className="px-4 py-2 bg-gray-300 text-white"
-                onClick={() => signOut()}
-            >
-                Logout
-            </button>
+            <div className="
+                hidden 
+                lg:block 
+                lg:pl-80 
+                h-full
+            ">
+                <EmptyState />
+            </div>
         </>
     )
 

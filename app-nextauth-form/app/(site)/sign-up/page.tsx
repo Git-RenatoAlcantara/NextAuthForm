@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import clsx from "clsx"
 import axios from "axios";
-import Input from "../components/Input";
+import Input from "../../components/Input";
 
 const schema = yup.object().shape({
     username: yup.string().min(5).required(),

@@ -26,6 +26,7 @@ export const authOptions: AuthOptions = {
               email: { label: 'email', type: 'text' },
               password: { label: 'password', type: 'password' }
             },
+            //@ts-expect-error
             async authorize(credentials) {
                 console.log("credentials", credentials)
                 if(!credentials?.email || !credentials?.password){
@@ -55,26 +56,7 @@ export const authOptions: AuthOptions = {
             }
           })      
     ],
-    async session({ session, token }) {
-     return {
-        ...session,
-        user: {
-            ...session.user,
-            username: token.username
-        }
-     }
-    },
-    async jwt({ token, user }: {token: any, user: any}) {
-        if(user){
-            return {
-                ...token,
-                user: {
-                    username: user.username
-                }
-            }
-        }
-    }
-  
+    
 }
 
 const handler = NextAuth(authOptions);
